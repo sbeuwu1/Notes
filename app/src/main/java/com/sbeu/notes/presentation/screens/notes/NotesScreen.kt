@@ -1,6 +1,5 @@
 package com.sbeu.notes.presentation.screens.notes
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
@@ -32,26 +31,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.sbeu.notes.R
 import com.sbeu.notes.domain.Note
-import com.sbeu.notes.presentation.screens.creation.CreateNoteViewModel
 import com.sbeu.notes.presentation.ui.theme.OtherNotesColors
 import com.sbeu.notes.presentation.ui.theme.PinnedNotesColors
 import com.sbeu.notes.presentation.utils.DateFormatter
 
 @Composable
 fun NotesScreen(
-    modifier: Modifier = Modifier,context: Context = LocalContext.current.applicationContext,
-    viewModel: NotesViewModel = viewModel {
-        NotesViewModel(context)
-    },
+    modifier: Modifier = Modifier,
+    viewModel: NotesViewModel = hiltViewModel(),
     onNoteClick: (Note) -> Unit,
     onAddNoteClick: () -> Unit
 ) {

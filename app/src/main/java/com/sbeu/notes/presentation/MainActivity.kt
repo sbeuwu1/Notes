@@ -7,7 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import com.sbeu.notes.presentation.navigation.CustomNavGraph
 import com.sbeu.notes.presentation.navigation.NavGraph
 import com.sbeu.notes.presentation.ui.theme.NotesTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
