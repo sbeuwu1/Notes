@@ -1,6 +1,8 @@
 package com.sbeu.notes.presentation.screens.creation
 
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.sbeu.notes.presentation.ui.theme.CustomIcons
 import com.sbeu.notes.presentation.utils.DateFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,11 +45,15 @@ fun CreateNoteScreen(
     val state = viewModel.state.collectAsState()
     val currentState = state.value
 
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = {
+            Log.d("CreateNoteScreen", it.toString())
+        }
+    )
+
     when (currentState) {
         is CreateNoteState.Creation -> {
-            LaunchedEffect(key1 = currentState.isSaveEnabled) {
-                Log.d("CreateNoteScreen", "CreateNoteScreen: button recomposition")
-            }
             Scaffold(
                 modifier = modifier,
                 topBar = {
@@ -74,7 +81,19 @@ fun CreateNoteScreen(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Back"
                             )
-                        }
+                        },
+                        actions = {
+                            Icon(
+                                modifier = Modifier
+                                    .clickable {
+                                        imagePicker.launch("image/*")
+                                    }
+                                    .padding(end = 24.dp),
+                                imageVector = CustomIcons.AddPhoto,
+                                contentDescription = "Add photo from gallery",
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                        },
                     )
                 }
             ) { innerPadding ->
