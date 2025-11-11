@@ -3,19 +3,16 @@ package com.sbeu.notes.presentation.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val White = Color(0xFFFFFFFF)
+val Black = Color(0xFF000000)
 
-val Yellow100 = Color(0xFFFDF2E1)
-val Yellow200 = Color(0xFFFCE5C3)
-val Blue100 = Color(0xFFE3EBF2)
-val Blue200 = Color(0xFFC8D8E5)
-val Green = Color(0xFFD1EAD1)
-val Purple = Color(0xFFDACEE6)
+// Dark theme colors
+val DarkYellowBackground = Color(0xFF241F0F)
+val DarkYellowPrimary = Color(0xFFF8C538)
+val DarkYellowSurface = Color(0xFF493F21)
+val DarkYellowOnSurfaceVariant = Color(0xFFCCBD8F)
 
-val Grey100 = Color(0xFFF9F9F9)
-val Grey200 = Color(0xFF868484)
-val Grey300 = Color(0xFF3D3B3B)
-
-val Brown = Color(0xFF703410)
-
-val PinnedNotesColors = listOf(Yellow200, Purple, Blue200)
-val OtherNotesColors = listOf(Yellow100, Green, Blue100)
+// Light theme colors
+val LightYellowBackground = Color(0xFFFAF8F5)
+val LightYellowPrimary = Color(0xFFF8C538)
+val LightYellowSurface = Color(0xFFF3EEE3)
+val LightYellowOnSurfaceVariant = Color(0xFFBD8D11)

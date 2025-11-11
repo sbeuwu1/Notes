@@ -85,10 +85,10 @@ fun EditNoteScreen(
                         actions = {
                             Icon(
                                 modifier = Modifier
+                                    .padding(end = 16.dp)
                                     .clickable {
                                         imagePicker.launch("image/*")
-                                    }
-                                    .padding(end = 16.dp),
+                                    },
                                 imageVector = CustomIcons.AddPhoto,
                                 contentDescription = stringResource(R.string.add_photo_from_gallery),
                                 tint = MaterialTheme.colorScheme.onSurface

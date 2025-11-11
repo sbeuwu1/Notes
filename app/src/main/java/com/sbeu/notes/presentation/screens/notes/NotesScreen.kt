@@ -47,8 +47,6 @@ import coil3.compose.AsyncImage
 import com.sbeu.notes.R
 import com.sbeu.notes.domain.ContentItem
 import com.sbeu.notes.domain.Note
-import com.sbeu.notes.presentation.ui.theme.OtherNotesColors
-import com.sbeu.notes.presentation.ui.theme.PinnedNotesColors
 import com.sbeu.notes.presentation.utils.DateFormatter
 
 @Composable
@@ -91,7 +89,9 @@ fun NotesScreen(
             }
             item {
                 SearchBar(
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .clip(RoundedCornerShape(8.dp)),
                     query = state.query,
                     onQueryChange = {
                         viewModel.processCommand(NotesCommand.InputSearchQuery(it))
@@ -108,13 +108,13 @@ fun NotesScreen(
                 )
             }
             item {
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
             item {
                 LazyRow(
                     modifier = Modifier,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = PaddingValues(horizontal = 24.dp)
+                    contentPadding = PaddingValues(horizontal = 16.dp)
                 ) {
                     itemsIndexed(
                         items = state.pinnedNotes,
@@ -125,12 +125,12 @@ fun NotesScreen(
                                 .widthIn(max = 160.dp),
                             note = note,
                             onNoteClick = {
-                                onNoteClick
+                                onNoteClick // FIXME: add action to open note
                             },
                             onLongClick = {
                                 viewModel.processCommand(NotesCommand.SwitchPinnedStatus(it.id))
                             },
-                            backgroundColor = PinnedNotesColors[index % PinnedNotesColors.size],
+                            backgroundColor = MaterialTheme.colorScheme.surface,
                         )
                     }
                 }
@@ -145,7 +145,7 @@ fun NotesScreen(
                 )
             }
             item {
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
             itemsIndexed(
                 items = state.otherNotes,
@@ -166,7 +166,7 @@ fun NotesScreen(
                         onLongClick = {
                             viewModel.processCommand(NotesCommand.SwitchPinnedStatus(it.id))
                         },
-                        backgroundColor = OtherNotesColors[index % OtherNotesColors.size],
+                        backgroundColor = MaterialTheme.colorScheme.surface,
                     )
                 } else {
                     NoteCardWithImage(
@@ -179,13 +179,12 @@ fun NotesScreen(
                         onLongClick = {
                             viewModel.processCommand(NotesCommand.SwitchPinnedStatus(it.id))
                         },
-                        backgroundColor = OtherNotesColors[index % OtherNotesColors.size],
+                        backgroundColor = MaterialTheme.colorScheme.surface,
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
-
     }
 }
 
@@ -283,7 +282,8 @@ fun NoteCard(
     ) {
         Text(
             text = note.title,
-            fontSize = 14.sp,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
             color = MaterialTheme.colorScheme.onSurface
@@ -306,7 +306,7 @@ fun NoteCard(
                 Spacer(modifier = Modifier.height(24.dp))
                 Text(
                     text = it,
-                    fontSize = 16.sp,
+                    fontSize = 12.sp,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
                     color = MaterialTheme.colorScheme.onSurface,
@@ -342,8 +342,7 @@ fun NoteCardWithImage(
             AsyncImage(
                 modifier = Modifier
                     .heightIn(120.dp)
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp)),
+                    .fillMaxWidth(),
                 model = imageUrl,
                 contentDescription = stringResource(R.string.first_image_from_note),
                 contentScale = ContentScale.FillWidth,
@@ -351,12 +350,11 @@ fun NoteCardWithImage(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp))
                     .background(
                         brush = Brush.verticalGradient(
                             listOf(
                                 Color.Transparent,
-                                MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                                MaterialTheme.colorScheme.surface
                             )
                         )
                     )
@@ -365,15 +363,16 @@ fun NoteCardWithImage(
             ) {
                 Text(
                     text = note.title,
-                    fontSize = 14.sp,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = DateFormatter.formatDateToString(note.updatedAt),
                     fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -387,7 +386,7 @@ fun NoteCardWithImage(
                 Text(
                     modifier = Modifier.padding(16.dp),
                     text = it,
-                    fontSize = 16.sp,
+                    fontSize = 12.sp,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
                     color = MaterialTheme.colorScheme.onSurface,
