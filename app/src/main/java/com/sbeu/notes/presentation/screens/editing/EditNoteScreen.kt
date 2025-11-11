@@ -1,6 +1,7 @@
 package com.sbeu.notes.presentation.screens.editing
 
-import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,13 +26,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.sbeu.notes.domain.ContentItem
+import com.sbeu.notes.R
 import com.sbeu.notes.presentation.screens.editing.EditNoteCommand.InputTitle
+import com.sbeu.notes.presentation.ui.theme.Content
+import com.sbeu.notes.presentation.ui.theme.CustomIcons
 import com.sbeu.notes.presentation.utils.DateFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,23 +54,28 @@ fun EditNoteScreen(
     val state = viewModel.state.collectAsState()
     val currentState = state.value
 
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            uri?.let {
+                viewModel.processCommand(EditNoteCommand.AddImage(it))
+            }
+        }
+    )
+
     when (currentState) {
         is EditNoteState.Editing -> {
-            LaunchedEffect(key1 = currentState.isSaveEnabled) {
-                Log.d("CreateNoteScreen", "CreateNoteScreen: button recomposition")
-            }
             Scaffold(
                 modifier = modifier,
                 topBar = {
                     TopAppBar(
                         title = {
                             Text(
-                                text = "Edit Note",
+                                text = stringResource(R.string.edit_note),
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface,
-
-                                )
+                            )
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
                             containerColor = Color.Transparent,
@@ -76,12 +85,22 @@ fun EditNoteScreen(
                         actions = {
                             Icon(
                                 modifier = Modifier
-                                    .padding(end = 16.dp)
+                                    .clickable {
+                                        imagePicker.launch("image/*")
+                                    }
+                                    .padding(end = 16.dp),
+                                imageVector = CustomIcons.AddPhoto,
+                                contentDescription = stringResource(R.string.add_photo_from_gallery),
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                            Icon(
+                                modifier = Modifier
+                                    .padding(end = 24.dp)
                                     .clickable {
                                         viewModel.processCommand(EditNoteCommand.Delete)
                                     },
                                 imageVector = Icons.Outlined.Delete,
-                                contentDescription = "Delete note",
+                                contentDescription = stringResource(R.string.delete_note),
                             )
                         },
                         navigationIcon = {
@@ -92,7 +111,7 @@ fun EditNoteScreen(
                                         viewModel.processCommand(EditNoteCommand.Back)
                                     },
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
+                                contentDescription = stringResource(R.string.back)
                             )
                         }
                     )
@@ -122,7 +141,7 @@ fun EditNoteScreen(
                         ),
                         placeholder = {
                             Text(
-                                text = "Title",
+                                text = stringResource(R.string.title),
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
@@ -135,16 +154,16 @@ fun EditNoteScreen(
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    currentState.note.content.filterIsInstance<ContentItem.Text>()
-                        .forEach { contentItem ->
-                            TextContent(
-                                modifier = Modifier.weight(1f),
-                                text = contentItem.content,
-                                onTextChanged = {
-                                    viewModel.processCommand(EditNoteCommand.InputContent(it))
-                                }
-                            )
+                    Content(
+                        modifier = Modifier.weight(1f),
+                        content = currentState.note.content,
+                        onTextChanged = { index, text ->
+                            viewModel.processCommand(EditNoteCommand.InputContent(text, index))
+                        },
+                        onDeleteImageClick = {
+                            viewModel.processCommand(EditNoteCommand.DeleteImage(it))
                         }
+                    )
                     Button(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -162,7 +181,7 @@ fun EditNoteScreen(
                         )
                     ) {
                         Text(
-                            text = "Save note"
+                            text = stringResource(R.string.save_note)
                         )
                     }
                 }
@@ -177,36 +196,4 @@ fun EditNoteScreen(
 
         EditNoteState.Initial -> {}
     }
-}
-
-@Composable
-private fun TextContent(
-    modifier: Modifier = Modifier,
-    text: String,
-    onTextChanged: (String) -> Unit
-) {
-    TextField(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp),
-        value = text,
-        onValueChange = onTextChanged,
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
-        ),
-        textStyle = TextStyle(
-            fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.onSurface
-        ),
-        placeholder = {
-            Text(
-                text = "Note something down",
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
-            )
-        }
-    )
 }

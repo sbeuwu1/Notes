@@ -45,6 +45,9 @@ android {
 }
 
 dependencies {
+    implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation("io.coil-kt.coil3:coil-compose:3.3.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.3.0")
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.hilt.navigation.compose)
