@@ -17,4 +17,5 @@
     <string name="first_image_from_note">Первое фото заметки</string>
     <string name="just_now">Только что</string>
     <string name="h_ago">%1$d ч назад</string>
+    <string name="note_something_down">Напишите что-нибудь</string>
 </resources>
