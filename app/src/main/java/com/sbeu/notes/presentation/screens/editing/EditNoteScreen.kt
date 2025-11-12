@@ -24,6 +24,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -36,6 +38,7 @@ import com.sbeu.notes.R
 import com.sbeu.notes.presentation.screens.editing.EditNoteCommand.InputTitle
 import com.sbeu.notes.presentation.ui.theme.Content
 import com.sbeu.notes.presentation.ui.theme.CustomIcons
+import com.sbeu.notes.presentation.ui.theme.DeleteAlertDialog
 import com.sbeu.notes.presentation.utils.DateFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,6 +65,41 @@ fun EditNoteScreen(
             }
         }
     )
+
+    val openAlertDialogForNote = remember { mutableStateOf(false) }
+    val openAlertDialogForImage = remember { mutableStateOf(false) }
+
+    val imageIndexToDelete = remember { mutableStateOf(-1) }
+
+    when {
+        openAlertDialogForNote.value -> {
+            DeleteAlertDialog(
+                onDismissRequest = { openAlertDialogForNote.value = false },
+                onConfirmation = {
+                    viewModel.processCommand(EditNoteCommand.Delete)
+                    openAlertDialogForNote.value = false
+                },
+                dialogTitle = stringResource(R.string.delete_note),
+                dialogText = stringResource(R.string.delete_note_confirmation),
+                icon = Icons.Outlined.Delete,
+            )
+        }
+    }
+
+    when {
+        openAlertDialogForImage.value -> {
+            DeleteAlertDialog(
+                onDismissRequest = { openAlertDialogForImage.value = false },
+                onConfirmation = {
+                    viewModel.processCommand(EditNoteCommand.DeleteImage(imageIndexToDelete.value))
+                    openAlertDialogForImage.value = false
+                },
+                dialogTitle = stringResource(R.string.delete_image),
+                dialogText = stringResource(R.string.delete_image_confirmation),
+                icon = Icons.Outlined.Delete,
+            )
+        }
+    }
 
     when (currentState) {
         is EditNoteState.Editing -> {
@@ -97,7 +135,7 @@ fun EditNoteScreen(
                                 modifier = Modifier
                                     .padding(end = 24.dp)
                                     .clickable {
-                                        viewModel.processCommand(EditNoteCommand.Delete)
+                                        openAlertDialogForNote.value = true
                                     },
                                 imageVector = Icons.Outlined.Delete,
                                 contentDescription = stringResource(R.string.delete_note),
@@ -161,7 +199,8 @@ fun EditNoteScreen(
                             viewModel.processCommand(EditNoteCommand.InputContent(text, index))
                         },
                         onDeleteImageClick = {
-                            viewModel.processCommand(EditNoteCommand.DeleteImage(it))
+                            imageIndexToDelete.value = it
+                            openAlertDialogForImage.value = true
                         }
                     )
                     Button(

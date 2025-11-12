@@ -18,4 +18,7 @@
     <string name="just_now">Только что</string>
     <string name="h_ago">%1$d ч назад</string>
     <string name="note_something_down">Напишите что-нибудь</string>
+    <string name="delete_image">Удаление изображения</string>
+    <string name="delete_note_confirmation">Вы уверены что хотите удалить заметку?</string>
+    <string name="delete_image_confirmation">Вы уверены что хотите удалить изображение?</string>
 </resources>
