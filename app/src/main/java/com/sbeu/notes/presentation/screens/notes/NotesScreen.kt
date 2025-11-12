@@ -125,7 +125,7 @@ fun NotesScreen(
                                 .widthIn(max = 160.dp),
                             note = note,
                             onNoteClick = {
-                                onNoteClick // FIXME: add action to open note
+                                onNoteClick(it)
                             },
                             onLongClick = {
                                 viewModel.processCommand(NotesCommand.SwitchPinnedStatus(it.id))
@@ -341,20 +341,22 @@ fun NoteCardWithImage(
         Box {
             AsyncImage(
                 modifier = Modifier
-                    .heightIn(120.dp)
-                    .fillMaxWidth(),
+                    .heightIn(max = 200.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp)),
                 model = imageUrl,
                 contentDescription = stringResource(R.string.first_image_from_note),
-                contentScale = ContentScale.FillWidth,
+                contentScale = ContentScale.FillWidth
             )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
                     .background(
                         brush = Brush.verticalGradient(
                             listOf(
                                 Color.Transparent,
-                                MaterialTheme.colorScheme.surface
+                                MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
                             )
                         )
                     )
@@ -363,16 +365,16 @@ fun NoteCardWithImage(
             ) {
                 Text(
                     text = note.title,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    overflow = TextOverflow.Ellipsis,
+                    fontSize = 18.sp,
                     maxLines = 1,
-                    color = MaterialTheme.colorScheme.onSurface
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = DateFormatter.formatDateToString(note.updatedAt),
                     fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
@@ -386,11 +388,11 @@ fun NoteCardWithImage(
                 Text(
                     modifier = Modifier.padding(16.dp),
                     text = it,
-                    fontSize = 12.sp,
+                    fontSize = 16.sp,
                     maxLines = 3,
-                    overflow = TextOverflow.Ellipsis,
                     color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
     }

@@ -2,4 +2,5 @@
 <resources>
     <color name="yellow">#FFFCE5C3</color>
     <color name="splash_background">#FAC738</color>
+    <color name="background">#231E10</color>
 </resources>

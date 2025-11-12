@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,6 +30,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,6 +48,7 @@ import com.sbeu.notes.R
 import com.sbeu.notes.domain.ContentItem
 import com.sbeu.notes.presentation.ui.theme.Content
 import com.sbeu.notes.presentation.ui.theme.CustomIcons
+import com.sbeu.notes.presentation.ui.theme.DeleteAlertDialog
 import com.sbeu.notes.presentation.utils.DateFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,6 +70,27 @@ fun CreateNoteScreen(
             }
         }
     )
+
+    val openAlertDialog = remember { mutableStateOf(false) }
+
+    val imageIndex = remember { mutableStateOf(-1) }
+
+    when {
+        openAlertDialog.value -> {
+            DeleteAlertDialog(
+                onDismissRequest = {
+                    openAlertDialog.value = false
+                },
+                onConfirmation = {
+                    viewModel.processCommand(CreateNoteCommand.DeleteImage(imageIndex.value))
+                    openAlertDialog.value = false
+                },
+                dialogTitle = stringResource(R.string.delete_image),
+                dialogText = stringResource(R.string.delete_image_confirmation),
+                icon = Icons.Default.Delete
+            )
+        }
+    }
 
     when (currentState) {
         is CreateNoteState.Creation -> {
@@ -153,7 +178,8 @@ fun CreateNoteScreen(
                             .weight(1f),
                         content = currentState.content,
                         onDeleteImageClick = {
-                            viewModel.processCommand(CreateNoteCommand.DeleteImage(it))
+                            imageIndex.value = it
+                            openAlertDialog.value = true
                         },
                         { index, text ->
                             viewModel.processCommand(

@@ -17,4 +17,7 @@
     <string name="just_now">Just now</string>
     <string name="h_ago">%1$d h ago</string>
     <string name="note_something_down">Note something down</string>
+    <string name="delete_image">Delete image</string>
+    <string name="delete_note_confirmation">You sure you want to delete note?</string>
+    <string name="delete_image_confirmation">You sure you want to delete image?</string>
 </resources>
