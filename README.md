@@ -18,3 +18,7 @@
 *   **База данных:** [Room](https://developer.android.com/training/data-storage/room)
 *   **Навигация:** [Jetpack Navigation для Compose](https://developer.android.com/jetpack/compose/navigation)
 *   **Загрузка изображений:** [Coil 3](https://coil-kt.github.io/coil/)
+
+## Скачать APK
+
+* **[Скачать приложение](https://github.com/sbeu-uwu/Notes/releases/download/v1.0.0/Notes.apk)**
