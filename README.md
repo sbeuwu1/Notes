@@ -13,8 +13,8 @@
 
 *   **UI:** 100% [Jetpack Compose](https://developer.android.com/jetpack/compose)
 *   **Архитектура:** MVI
-*   **Асинхронное программирование:** [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) и [Flow](https://kotlinlang.org/docs/flow.html).
+*   **Асинхронное программирование:** [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) и [Flow](https://kotlinlang.org/docs/flow.html)
 *   **DI:** [Hilt](https://dagger.dev/hilt/)
 *   **База данных:** [Room](https://developer.android.com/training/data-storage/room)
-*   **Навигация:** [Jetpack Navigation для Compose](https://developer.android.com/jetpack/compose/navigation) с анимациями для плавного пользовательского опыта.
-*   **Загрузка изображений:** [Coil 3](https://coil-kt.github.io/coil/) для эффективной и производительной загрузки изображений.
+*   **Навигация:** [Jetpack Navigation для Compose](https://developer.android.com/jetpack/compose/navigation)
+*   **Загрузка изображений:** [Coil 3](https://coil-kt.github.io/coil/)
