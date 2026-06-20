@@ -19,6 +19,12 @@
 *   **Навигация:** [Jetpack Navigation для Compose](https://developer.android.com/jetpack/compose/navigation)
 *   **Загрузка изображений:** [Coil 3](https://coil-kt.github.io/coil/)
 
+## Скриншоты
+
+| Главный экран | Планирование |
+| :---: | :---: |
+| ![Screen 1](Screenshot_2026_06_20_19_21_34_35_97747769b7bbf7a78419007a512970eb.jpg) | ![Screen 2](Screenshot_2026_06_20_19_22_32_51_97747769b7bbf7a78419007a512970eb.jpg) |
+
 ## Скачать APK
 
 * **[Скачать приложение](https://github.com/sbeu-uwu/Notes/releases/download/v1.0.0/Notes.apk)**
